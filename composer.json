@@ -1,0 +1,7 @@
+{
+    "name": "yourusername/yourrepositoryname",
+    "description": "Works with SimplyBook.me to validate the booking.",
+    "require": {
+        "php": ">=7.4"
+    }
+}
