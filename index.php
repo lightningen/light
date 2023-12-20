@@ -1,13 +1,12 @@
 <?php
 
-
 include_once 'ExternalValidatorException.php';
 include_once 'ExternalValidator.php';
 
+$incomingData = json_decode(file_get_contents('php://input'), true);
 
-$incomingData = json_decode(file_get_contents('php://input'),true);
 /*
-//uncomment for local testing
+// Uncomment for local testing
 
 $incomingData = json_decode('{
     "service_id":"9",
@@ -29,16 +28,31 @@ $incomingData = json_decode('{
         },
         {
             "id":"ac4c3775f20dcfdea531346ee5bc8ea4",
-            "name":"Date of birth",
-            "value":"1973-03-02"
+            "name":"Gender",
+            "value":"female"
         }
     ]
-}',true);
+}', true);
 */
-if(!$incomingData){
+
+if (!$incomingData) {
     echo json_encode(array());
 } else {
     $validator = new ExternalValidator();
     $result = $validator->validate($incomingData);
+
+    // Custom check for "female" gender
+    $checkvalue = "";
+    foreach ($incomingData['additional_fields'] as $elem) {
+        if ($elem["id"] == "f31854d786f955875951edc4bf281a49") { // Replace with your actual gender question ID
+            $checkvalue = $elem["value"];
+        }
+    }
+
+    if (strtolower($checkvalue) == "女性") {
+        // Add an error message to the result array
+        $result['errors'][] = "抱歉 系統維修中";
+    }
+
     echo json_encode($result);
 }
