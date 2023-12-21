@@ -25,7 +25,7 @@ if (!$incomingData) {
         }
     }
 
-    if (mb_strtolower($genderCheckValue, 'UTF-8') == "female" && $ageCheckValue < 50) {
+    if (mb_strtolower($genderCheckValue, 'UTF-8') == "女性" && $ageCheckValue < 50) {
         // Add an error message to the result array
         $result['errors'][] = "系統維修中，如需退費請聯繫客服申請退費 lightningen@outlook.com"; // Error message in Chinese
     }
