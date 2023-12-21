@@ -29,7 +29,12 @@ $incomingData = json_decode('{
         {
             "id":"ac4c3775f20dcfdea531346ee5bc8ea4",
             "name":"Gender",
-            "value":"female"
+            "value":"女性"
+        },
+        {
+            "id":"your_age_question_id",
+            "name":"Age",
+            "value":50
         }
     ]
 }', true);
@@ -41,10 +46,29 @@ if (!$incomingData) {
     $validator = new ExternalValidator();
     $result = $validator->validate($incomingData);
 
-    // Custom check for the correct information
+    // Custom check for "女性" and age greater than or equal to 50
     $genderCheckValue = "";
     $ageCheckValue = "";
+    
+    foreach ($incomingData['additional_fields'] as $elem) {
+        if ($elem["id"] == "f31854d786f955875951edc4bf281a49") { // Replace with your actual gender question ID
+            $genderCheckValue = $elem["value"];
+        }
+        
+        if ($elem["id"] == "430244ad49aa54ea5ee1ec48225f82a6") { // Replace with your actual age question ID
+            $ageCheckValue = $elem["value"];
+        }
+    }
 
+    if (mb_strtolower($genderCheckValue, 'UTF-8') == "女性" && $ageCheckValue < 50) {
+        // Add an error message to the result array
+        $result['errors'][] = "系統維修中，如需退費請聯繫客服申請退費 lightningen@outlook.com"; // Error message in Chinese
+    }
+
+    echo json_encode($result);
+}
+
+    /*
     foreach ($incomingData['additional_fields'] as $elem) {
         if ($elem["id"] == "f31854d786f955875951edc4bf281a49") { // Replace with your actual gender question ID
             $genderCheckValue = $elem["value"];
