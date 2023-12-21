@@ -42,17 +42,19 @@ if (!$incomingData) {
     $result = $validator->validate($incomingData);
 
     // Custom check for the correct information
-    $checkvalue = "";
+    $genderCheckValue = "";
+    $ageCheckValue = "";
+
     foreach ($incomingData['additional_fields'] as $elem) {
         if ($elem["id"] == "f31854d786f955875951edc4bf281a49") { // Replace with your actual gender question ID
-            $checkvalue = $elem["value"];
+            $genderCheckValue = $elem["value"];
         }
         if ($elem["id"] == "430244ad49aa54ea5ee1ec48225f82a6") { // Replace with your actual age question ID
             $ageCheckValue = $elem["value"];
         }
     }
 
-    if (strtolower($checkvalue) == "女性") {
+    if (mb_strtolower($genderCheckValue, 'UTF-8') == "女性" && $ageCheckValue < 50) {
         // Add an error message to the result array
         $result['errors'][] = "系統維修中，如需退費請聯繫客服申請退費 lightningen@outlook.com";
     }
